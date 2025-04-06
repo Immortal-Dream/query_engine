@@ -1,22 +1,44 @@
 const http = require('http');
 const httpProxy = require('http-proxy');
 const url = require('url');
+const fs = require('fs');
+const path = require('path');
+const YAML = require('yaml');
 const HashRing = require('./hashRing');
 
 const PORT = 8080;
 const proxy = httpProxy.createProxyServer({});
+const configPath = path.join(__dirname, 'config/servers.config.yaml');
 
-// Replace with your actual backend node URLs
-const servers = [
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:3003'
-];
+let ring = null;
 
-const ring = new HashRing(servers);
+// Load and update the HashRing from YAML config
+function loadServersAndUpdateRing() {
+    try {
+        const file = fs.readFileSync(configPath, 'utf8');
+        const config = YAML.parse(file);
+        if (Array.isArray(config.nodes) && config.nodes.length > 0) {
+            ring = new HashRing(config.nodes, 100);
+            console.log(`✅ HashRing updated with ${config.nodes.length} nodes.`);
+        } else {
+            console.warn('⚠️ No valid nodes found in config file.');
+        }
+    } catch (err) {
+        console.error('❌ Failed to parse YAML config:', err.message);
+    }
+}
 
+// Load once at startup
+loadServersAndUpdateRing();
+
+// Hot-reload when config file changes
+fs.watchFile(configPath, { interval: 1000 }, () => {
+    console.log('🔄 servers.config.yaml changed. Reloading...');
+    loadServersAndUpdateRing();
+});
+
+// Create HTTP server
 const server = http.createServer((req, res) => {
-    // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', '*');
@@ -29,10 +51,16 @@ const server = http.createServer((req, res) => {
 
     const parsedUrl = url.parse(req.url, true);
     if (parsedUrl.pathname === '/api/query') {
-        const query = parsedUrl.query.q || 'default';
-        const target = ring.getNode(query); // use consistent hash logic
+        if (!ring) {
+            res.writeHead(503);
+            res.end('Service unavailable: no backend nodes loaded.');
+            return;
+        }
 
-        console.log(`Routing "${query}" to ${target}`);
+        const query = parsedUrl.query.q || 'default';
+        const target = ring.getNode(query);
+
+        console.log(`📦 Routing "${query}" to ${target}`);
         proxy.web(req, res, { target }, err => {
             res.writeHead(502);
             res.end('Bad Gateway: ' + err.message);

@@ -1,23 +1,26 @@
-const crypto = require('crypto');
-const { getNID, consistentHash, idToNum } = require('./idUtils'); // use your shared hashing utils
+const { getID, consistentHash } = require('./idUtils');
 
 class HashRing {
-    constructor(nodes = []) {
-        // Store only node IDs (not replicas) since consistentHash doesn't need replicas
-        this.nodes = nodes.map(node => getNID({ ip: node.split(':')[1].replace('//', ''), port: node.split(':')[2] }));
-        this.nodeMap = new Map();
-        for (let i = 0; i < nodes.length; i++) {
-            const nid = this.nodes[i];
-            this.nodeMap.set(nid, nodes[i]); // map NID → original URL
+    constructor(nodes = [], virtualNodes = 100) {
+        this.virtualNodes = virtualNodes;
+        this.nidToRealNode = new Map(); // NID -> actual node address
+        this.nidList = [];
+
+        // For each real node, generate multiple virtual nodes
+        for (const node of nodes) {
+            for (let i = 0; i < this.virtualNodes; i++) {
+                const virtualLabel = `${node}#${i}`; // eg. http://x.x.x.x:3001#42
+                const nid = getID(virtualLabel);
+                this.nidList.push(nid);
+                this.nidToRealNode.set(nid, node);
+            }
         }
     }
 
     getNode(key) {
-        if (this.nodes.length === 0) return null;
-
-        const kid = crypto.createHash('sha256').update(key).digest('hex'); // query key → hash ID
-        const targetNid = consistentHash(kid, this.nodes); // pick target node ID
-        return this.nodeMap.get(targetNid); // return actual node URL
+        const kid = getID(key); // hash the key
+        const targetNid = consistentHash(kid, this.nidList); // choose best virtual node
+        return this.nidToRealNode.get(targetNid); // map back to real node
     }
 }
 
