@@ -19,12 +19,12 @@ function loadServersAndUpdateRing() {
         const config = YAML.parse(file);
         if (Array.isArray(config.nodes) && config.nodes.length > 0) {
             ring = new HashRing(config.nodes, 100);
-            console.log(`✅ HashRing updated with ${config.nodes.length} nodes.`);
+            console.log(`HashRing updated with ${config.nodes.length} nodes.`);
         } else {
             console.warn('⚠️ No valid nodes found in config file.');
         }
     } catch (err) {
-        console.error('❌ Failed to parse YAML config:', err.message);
+        console.error('Failed to parse YAML config:', err.message);
     }
 }
 
@@ -72,5 +72,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`🚀 Load Balancer running at http://localhost:${PORT}`);
+    console.log(`Load Balancer running at http://localhost:${PORT}`);
 });

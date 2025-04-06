@@ -1,0 +1,16 @@
+{
+  "name": "load_balancer",
+  "version": "1.0.0",
+  "description": "Consistent Hash Load Balancer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "backend1": "node backend.js 3001",
+    "backend2": "node backend.js 3002",
+    "backend3": "node backend.js 3003"
+  },
+  "dependencies": {
+    "http-proxy": "^1.18.1",
+    "yaml": "^2.7.1"
+  }
+}
