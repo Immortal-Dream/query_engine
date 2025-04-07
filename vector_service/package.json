@@ -1,12 +1,15 @@
 {
-  "name": "query_actor",
+  "name": "milvus-node-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A Node.js RESTful API service for interacting with Milvus Standard using Express and Axios.",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "PORT=10086 node app.js"
   },
-  "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0"
+  }
 }
