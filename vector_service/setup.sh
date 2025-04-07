@@ -39,5 +39,6 @@ fi
 # 安装项目依赖：express 和 axios
 echo "Installing dependencies: express and axios..."
 npm install express axios
+npm install @zilliz/milvus2-sdk-node
 
 echo "Setup complete. You can now run the project with: node app.js"

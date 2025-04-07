@@ -1,188 +1,161 @@
-// Import required modules
+// app.js
 const express = require('express');
-const axios = require('axios');
+const { MilvusClient, DataType } = require('@zilliz/milvus2-sdk-node');
 
-// Create an instance of Express application
 const app = express();
-
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Base URL for Milvus REST API (adjust if needed)
-const MILVUS_BASE_URL = 'http://localhost:9091';
+// Milvus gRPC 地址（Milvus 服务默认监听 19530）
+const MILVUS_ADDRESS = '127.0.0.1:19530';
+const COLLECTION_NAME = 'papers';
+const VECTOR_DIM = 768;
 
-// Dummy function to compute an embedding vector for a given text
-// In production, replace this with a call to an actual embedding service/model
+// Initialize Milvus client
+const client = new MilvusClient({
+    address: MILVUS_ADDRESS,
+});
+
+// Dummy function to compute an embedding vector for a given text.
+// In production, replace this with a call to your embedding service/model.
 function computeEmbedding(text) {
-    const dimension = 768; // example dimension, adjust as necessary
     const vector = [];
-    for (let i = 0; i < dimension; i++) {
-        // Generate random numbers as dummy vector values
+    for (let i = 0; i < VECTOR_DIM; i++) {
         vector.push(Math.random());
     }
     return vector;
 }
 
-/**
- * POST /insert endpoint
- * This endpoint receives paper data and inserts it into Milvus.
- * Expected JSON body fields: paper_id, link, title, abstract.
- */
-app.post('/insert', async (req, res) => {
+// Ensure the collection exists; if not, create it.
+async function ensureCollectionExists() {
     try {
-        const { paper_id, link, title, abstract } = req.body;
-
-        // Validate input fields
-        if (!paper_id || !link || !title || !abstract) {
-            return res.status(400).json({ error: 'Missing required fields' });
+        const hasColl = await client.hasCollection({ collection_name: COLLECTION_NAME });
+        if (!hasColl.value) {
+            console.log(`Collection "${COLLECTION_NAME}" not found. Creating...`);
+            await client.createCollection({
+                collection_name: COLLECTION_NAME,
+                fields: [
+                    {
+                        name: 'paper_id',
+                        description: 'Primary key',
+                        data_type: DataType.Int64,
+                        is_primary_key: true,
+                        autoID: false,
+                    },
+                    {
+                        name: 'title',
+                        description: 'Paper title',
+                        data_type: DataType.VarChar,
+                        max_length: 512,
+                    },
+                    {
+                        name: 'link',
+                        description: 'Paper link',
+                        data_type: DataType.VarChar,
+                        max_length: 512,
+                    },
+                    {
+                        name: 'abstract',
+                        description: 'Paper abstract',
+                        data_type: DataType.VarChar,
+                        max_length: 2048,
+                    },
+                    {
+                        name: 'vector',
+                        description: 'Embedding vector',
+                        data_type: DataType.FloatVector,
+                        dim: VECTOR_DIM,
+                    },
+                ],
+                shard_num: 2,
+            });
+            console.log(`Collection "${COLLECTION_NAME}" created successfully.`);
+        } else {
+            console.log(`Collection "${COLLECTION_NAME}" already exists.`);
         }
-
-        // Compute the vector embedding based on title and abstract
-        // (You can adjust the input to your embedding model as needed)
-        const textForEmbedding = `${title} ${abstract}`;
-        const embedding = computeEmbedding(textForEmbedding);
-
-        // Prepare the payload for Milvus insertion
-        // The fields object maps each field name to an array of values.
-        const payload = {
-            fields: {
-                paper_id: [paper_id],
-                title: [title],
-                link: [link],
-                abstract: [abstract],
-                vector: [embedding]
-            }
-        };
-
-        // Define the collection name
-        const collectionName = 'papers';
-        // Construct the Milvus REST API endpoint URL for inserting entities
-        // (Assuming the endpoint follows the pattern below)
-        const insertUrl = `${MILVUS_BASE_URL}/v1/collections/${collectionName}/entities`;
-
-        // Send a POST request to Milvus to insert the document
-        const response = await axios.post(insertUrl, payload);
-
-        // Return success response
-        return res.json({ message: 'Insert successful', data: response.data });
-    } catch (error) {
-        console.error('Insert error:', error.message);
-        return res.status(500).json({ error: 'Insert failed', details: error.message });
-    }
-});
-
-/**
- * GET /search endpoint
- * This endpoint receives a query string, computes its embedding,
- * and searches Milvus for the top 5 nearest documents.
- * It then returns the title, link, and abstract of the matched papers.
- */
-app.get('/search', async (req, res) => {
-    try {
-        const queryText = req.query.query;
-
-        // Validate that the query parameter is provided
-        if (!queryText) {
-            return res.status(400).json({ error: 'Query parameter is required' });
-        }
-
-        // Compute the embedding for the query text
-        const queryEmbedding = computeEmbedding(queryText);
-
-        // Prepare the search payload for Milvus
-        // Adjust the payload format as required by your Milvus REST API version
-        const payload = {
-            search_params: {
-                data: [queryEmbedding],
-                anns_field: 'vector',
-                limit: 5,
-                params: { nprobe: 10 }
-            },
-            output_fields: ['title', 'link', 'abstract']  // Fields to return in the result
-        };
-
-        // Define the collection name and construct the search endpoint URL
-        const collectionName = 'papers';
-        const searchUrl = `${MILVUS_BASE_URL}/v1/collections/${collectionName}/search`;
-
-        // Send a POST request to Milvus to perform the search
-        const response = await axios.post(searchUrl, payload);
-
-        // Extract and return the search results
-        // (The structure of response.data depends on your Milvus API version)
-        return res.json({ message: 'Search successful', results: response.data.data });
-    } catch (error) {
-        console.error('Search error:', error.message);
-        return res.status(500).json({ error: 'Search failed', details: error.message });
-    }
-});
-
-// Start the server on the specified port (default 10086  )
-const PORT = process.env.PORT || 10086 ;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-
-// Function to check if the collection exists, and create it if not
-async function ensureCollectionExists(collectionName) {
-    try {
-        // Check existing collections
-        const res = await axios.get(`${MILVUS_BASE_URL}/v1/collections`);
-        const collections = res.data?.data || [];
-
-        const exists = collections.some(col => col.name === collectionName);
-        if (exists) {
-            return; // Already exists, no need to create
-        }
-
-        console.log(`Collection '${collectionName}' not found. Creating...`);
-
-        // Define the collection schema
-        const createPayload = {
-            collection_name: collectionName,
-            fields: [
-                {
-                    name: "paper_id",
-                    description: "Primary key",
-                    data_type: "Int64",
-                    is_primary_key: true,
-                    auto_id: false
-                },
-                {
-                    name: "title",
-                    description: "Paper title",
-                    data_type: "VarChar",
-                    max_length: 512
-                },
-                {
-                    name: "link",
-                    description: "Paper link",
-                    data_type: "VarChar",
-                    max_length: 512
-                },
-                {
-                    name: "abstract",
-                    description: "Paper abstract",
-                    data_type: "VarChar",
-                    max_length: 2048
-                },
-                {
-                    name: "vector",
-                    description: "Embedding vector",
-                    data_type: "FloatVector",
-                    type_params: {
-                        dim: 768
-                    }
-                }
-            ]
-        };
-
-        // Create the collection
-        await axios.post(`${MILVUS_BASE_URL}/v1/collections`, createPayload);
-        console.log(`Collection '${collectionName}' created successfully.`);
     } catch (err) {
-        console.error('Failed to ensure collection:', err.message);
+        console.error('Error in ensureCollectionExists:', err);
         throw err;
     }
 }
+
+// POST /insert endpoint: Inserts a new paper document into Milvus.
+// Expects JSON body with paper_id, title, link, abstract.
+app.post('/insert', async (req, res) => {
+    try {
+        const { paper_id, title, link, abstract } = req.body;
+        if (!paper_id || !title || !link || !abstract) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+        // Compute embedding vector from title + abstract.
+        const embedding = computeEmbedding(`${title} ${abstract}`);
+
+        // Prepare record for insertion.
+        // 将 paper_id 转换为 Number 避免 JSON.stringify 无法序列化 BigInt
+        const records = [
+            {
+                paper_id: Number(paper_id),
+                title,
+                link,
+                abstract,
+                vector: embedding,
+            },
+        ];
+
+        const insertResult = await client.insert({
+            collection_name: COLLECTION_NAME,
+            data: records,
+        });
+
+        res.json({
+            message: 'Insert successful',
+            insert_count: insertResult.insert_count,
+            insert_ids: insertResult.insert_ids,
+        });
+    } catch (err) {
+        console.error('Insert error:', err);
+        res.status(500).json({ error: 'Insert failed', details: err.message });
+    }
+});
+
+// GET /search endpoint: Searches for papers similar to the provided query.
+// Expects query parameter "query". 返回前 5 条最相似的记录。
+app.get('/search', async (req, res) => {
+    try {
+        const queryText = req.query.query;
+        if (!queryText) {
+            return res.status(400).json({ error: 'Query parameter is required' });
+        }
+        // Compute embedding vector for the query.
+        const queryVector = computeEmbedding(queryText);
+
+        const searchResult = await client.search({
+            collection_name: COLLECTION_NAME,
+            data: [queryVector],
+            anns_field: 'vector',
+            param: {
+                metric_type: 'L2',
+                params: JSON.stringify({ nprobe: 10 }),
+            },
+            limit: 5,
+            output_fields: ['paper_id', 'title', 'link', 'abstract'],
+        });
+
+        res.json({ message: 'Search successful', results: searchResult.results });
+    } catch (err) {
+        console.error('Search error:', err);
+        res.status(500).json({ error: 'Search failed', details: err.message });
+    }
+});
+
+// Start HTTP server on port 10086 and initialize Milvus connection.
+const PORT = process.env.PORT || 10086;
+app.listen(PORT, async () => {
+    try {
+        await client.connect();
+        console.log(`Connected to Milvus at ${MILVUS_ADDRESS}`);
+        await ensureCollectionExists();
+        console.log(`Server is running on port ${PORT}`);
+    } catch (err) {
+        console.error('Initialization error:', err);
+    }
+});
