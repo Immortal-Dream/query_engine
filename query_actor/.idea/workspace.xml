@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../vector_service/app.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vector_service/setup.sh" afterDir="false" />
+    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="&quot;feat: complete inserting paper data into vector database&quot;">
+      <change afterPath="$PROJECT_DIR$/../vector_service/bin/www.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vector_service/controllers/paper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vector_service/routes/paper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vector_service/services/milvusService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../vector_service/utils/embedding.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vector_service/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vector_service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,13 +54,13 @@
 }]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
-      <window_info id="Bookmarks" side_tool="true" />
       <window_info id="Merge Requests" />
       <window_info id="Commit_Guest" show_stripe_button="false" />
-      <window_info id="Pull Requests" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15390626" />
-      <window_info id="Commit" order="1" weight="0.16328125" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.50037825" visible="true" weight="0.15371093" />
+      <window_info id="Commit" order="1" weight="0.15390626" />
+      <window_info id="Structure" order="2" sideWeight="0.4995379" side_tool="true" weight="0.15390626" />
+      <window_info id="Pull Requests" order="3" sideWeight="0.50101215" weight="0.15390626" />
+      <window_info active="true" id="Bookmarks" order="4" sideWeight="0.49962178" side_tool="true" visible="true" weight="0.15371093" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="TODO" />
@@ -65,9 +69,9 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.33029515" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.3302257" />
       <window_info anchor="bottom" id="Services" order="4" weight="0.33029515" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.33029515" />
+      <window_info anchor="bottom" id="Run" order="5" weight="0.48670977" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
@@ -114,11 +118,33 @@
       <option name="presentableId" value="Default" />
       <updated>1743987479349</updated>
       <workItem from="1743987481055" duration="2089000" />
-      <workItem from="1743989824298" duration="1975000" />
+      <workItem from="1743989824298" duration="12884000" />
     </task>
+    <task id="LOCAL-00001" summary="&quot;feat: complete the basic insert/query apis for vector database&quot;">
+      <option name="closed" value="true" />
+      <created>1743991969837</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743991969837</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&quot;feat: complete inserting paper data into vector database&quot;">
+      <option name="closed" value="true" />
+      <created>1743997295120</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743997295120</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="&quot;feat: complete the basic insert/query apis for vector database&quot;" />
+    <MESSAGE value="&quot;feat: complete inserting paper data into vector database&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;feat: complete inserting paper data into vector database&quot;" />
   </component>
 </project>
