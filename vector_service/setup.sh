@@ -1,5 +1,5 @@
 #!/bin/bash
-# setup.sh - 自动安装 Node.js/npm（如果未安装），并安装项目依赖
+# setup.sh - set up project's dependencies
 
 # Function: install Node.js on Debian/Ubuntu
 install_node_debian() {
@@ -15,7 +15,7 @@ install_node_centos() {
   sudo yum install -y nodejs
 }
 
-# Check if npm is installed; if not, install Node.js (npm随Node.js一起安装)
+# Check if npm is installed; if not, install Node.js
 if ! command -v npm &>/dev/null; then
   echo "npm not found. Installing Node.js and npm..."
   if [ -f /etc/debian_version ]; then
@@ -30,15 +30,16 @@ else
   echo "npm is already installed."
 fi
 
-# 如果没有 package.json 则初始化一个（不会覆盖已有的 app.js 文件）
+# Initialize the package.json
 if [ ! -f package.json ]; then
   echo "Initializing npm project..."
   npm init -y
 fi
 
-# 安装项目依赖：express 和 axios
+# install the project dependencies
 echo "Installing dependencies: express and axios..."
 npm install express axios
 npm install @zilliz/milvus2-sdk-node
+npm install chalk dayjs
 
 echo "Setup complete. You can now run the project with: node app.js"

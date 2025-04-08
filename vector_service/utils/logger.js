@@ -1,0 +1,23 @@
+const chalk = require('chalk');
+const dayjs = require('dayjs');
+
+// Colors
+const levelColors = {
+    info: chalk.blue,
+    warn: chalk.yellow,
+    error: chalk.red,
+    debug: chalk.gray,
+};
+
+function log(level, message, ...optionalParams) {
+    const color = levelColors[level] || chalk.white;
+    const time = dayjs().format('YYYY-MM-DD HH:mm:ss');
+    console.log(color(`[${time}] [${level.toUpperCase()}] ${message}`), ...optionalParams);
+}
+
+module.exports = {
+    info: (msg, ...params) => log('info', msg, ...params),
+    warn: (msg, ...params) => log('warn', msg, ...params),
+    error: (msg, ...params) => log('error', msg, ...params),
+    debug: (msg, ...params) => log('debug', msg, ...params),
+};
