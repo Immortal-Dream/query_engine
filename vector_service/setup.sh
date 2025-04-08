@@ -4,7 +4,7 @@
 # Function: install Node.js on Debian/Ubuntu
 install_node_debian() {
   echo "Installing Node.js on Debian/Ubuntu..."
-  curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
   sudo apt-get install -y nodejs
 }
 
@@ -41,5 +41,5 @@ echo "Installing dependencies: express and axios..."
 npm install express axios
 npm install @zilliz/milvus2-sdk-node
 npm install chalk dayjs
-
+npm install fastembed
 echo "Setup complete. You can now run the project with: node app.js"

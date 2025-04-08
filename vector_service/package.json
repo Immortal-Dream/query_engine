@@ -1,6 +1,7 @@
 {
   "name": "milvus-node-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "A Node.js RESTful API service for interacting with Milvus Standard using Express and Axios.",
   "main": "app.js",
   "scripts": {
@@ -10,9 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "@zilliz/milvus2-sdk-node": "^2.5.7",
-    "axios": "^1.4.0",
+    "axios": "^1.8.4",
     "chalk": "^4.1.2",
     "dayjs": "^1.11.13",
-    "express": "^4.18.2"
+    "express": "^4.21.2"
   }
 }

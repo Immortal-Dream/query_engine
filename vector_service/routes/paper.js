@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import { insertPaper, searchPapers } from '../controllers/milvusController.js';
+
 const router = express.Router();
-const { insertPaper, searchPapers } = require('../controllers/milvusController');
 
 router.post('/insert', insertPaper);
 router.get('/search', searchPapers);
 
-module.exports = router;
+export default router;

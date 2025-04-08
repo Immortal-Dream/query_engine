@@ -1,9 +1,11 @@
-const { MilvusClient, DataType } = require('@zilliz/milvus2-sdk-node');
+import { MilvusClient, DataType } from '@zilliz/milvus2-sdk-node';
+
 const COLLECTION_NAME = 'papers';
+// Vector dimension
 const VECTOR_DIM = 768;
 const client = new MilvusClient({ address: '127.0.0.1:19530' });
 
-async function init() {
+export async function init() {
     await client.connect();
     const has = await client.hasCollection({ collection_name: COLLECTION_NAME });
     if (!has.value) {
@@ -30,16 +32,16 @@ async function init() {
 
 init();
 
-exports.insert = async (paper_id, title, link, abstract, vector) => {
+export async function insert(paper_id, title, link, abstract, vector) {
     return await client.insert({
         collection_name: COLLECTION_NAME,
         data: [
             { paper_id: Number(paper_id), title, link, abstract, vector },
         ],
     });
-};
+}
 
-exports.search = async (queryVector) => {
+export async function search(queryVector) {
     const result = await client.search({
         collection_name: COLLECTION_NAME,
         data: [queryVector],
@@ -49,4 +51,4 @@ exports.search = async (queryVector) => {
         output_fields: ['paper_id', 'title', 'link', 'abstract'],
     });
     return result.results;
-};
+}
