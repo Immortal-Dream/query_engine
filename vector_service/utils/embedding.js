@@ -1,27 +1,39 @@
-const VECTOR_DIM = 768;
+import { FlagEmbedding } from 'fastembed';
+import fs from 'fs/promises';
+import path from 'path';
 
-export function computeEmbedding(text) {
-    const vector = [];
-    for (let i = 0; i < VECTOR_DIM; i++) {
-        vector.push(Math.random());
+let embedder = null;
+
+// Initialize FlagEmbedding embedder
+export async function initEmbedder() {
+    if (!embedder) {
+        // Create cache directory if it doesn't exist
+        const cacheDir = path.resolve('local_cache');
+        const modelDir = path.join(cacheDir, 'BAAI');
+
+        try {
+            await fs.mkdir(cacheDir, { recursive: true });
+            await fs.mkdir(modelDir, { recursive: true });
+
+            embedder = await FlagEmbedding.init({
+                model: 'BAAI/bge-small-en-v1.5',
+                cacheDir: cacheDir,
+                backend: 'node' // Use Node.js implementation instead of Milvus
+            });
+            console.log('[Embedding] Model initialized successfully.');
+        } catch (error) {
+            console.error('[Embedding] Error initializing model:', error);
+            throw error;
+        }
     }
-    return vector;
+    return embedder;
 }
-// let embedder = null;
-//
-// // Initialize FastEmbed embedder (using the lightweight BGE-small model)
-// export async function initEmbedder() {
-//     if (!embedder) {
-//         embedder = await embedding.BGE('BAAI/bge-small-en-v1.5');
-//         console.log('[Embedding] FastEmbed model initialized.');
-//     }
-// }
-//
-// // Compute the embedding vector for a single text input
-// export async function computeEmbedding(text) {
-//     if (!embedder) {
-//         throw new Error('Embedder not initialized. Call initEmbedder() first.');
-//     }
-//     const result = await embedder.embed([text]);
-//     return result[0]; // Return the first vector (for a single text input)
-// }
+
+// Compute the embedding vector for a single text input
+export async function computeEmbedding(text) {
+    if (!embedder) {
+        throw new Error('Embedder not initialized. Call initEmbedder() first.');
+    }
+    const embeddings = await embedder.embed([text]);
+    return embeddings[0]; // Return the first vector
+}
