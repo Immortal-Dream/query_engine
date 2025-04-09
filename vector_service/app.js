@@ -1,6 +1,7 @@
 import express from 'express';
 import http from 'http';
 import paperRouter from './routes/paper.js';
+import testEmbedding from "./utils/TestEmbedding.cjs";
 //
 
 const app = express();
@@ -9,12 +10,13 @@ app.use('/', paperRouter);
 
 // Port number Setting
 const PORT = process.env.PORT || 10086;
+const { initEmbedder, computeEmbedding } = testEmbedding;
 
 // Start the server
 async function startServer() {
     try {
         // Initialize the embedding model first
-        // await initEmbedder();
+        await initEmbedder();
 
         // Then, start the HTTP server
         const server = http.createServer(app);

@@ -5,7 +5,7 @@
   "description": "A Node.js RESTful API service for interacting with Milvus Standard using Express and Axios.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "PORT=10086 node app.js"
   },
   "author": "",
   "license": "ISC",

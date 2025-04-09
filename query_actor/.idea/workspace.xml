@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="&quot;feat: complete inserting paper data into vector database&quot;">
-      <change afterPath="$PROJECT_DIR$/../vector_service/bin/www.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vector_service/controllers/paper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vector_service/routes/paper.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vector_service/services/milvusService.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../vector_service/utils/embedding.js" afterDir="false" />
+    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="&quot;bug: add test file of embedding function&quot;">
+      <change afterPath="$PROJECT_DIR$/../vector_service/utils/TestEmbedding.cjs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vector_service/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vector_service/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vector_service/utils/TestEmbedding.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,30 +34,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.start.executor": "Run",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Node.js.app.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/root/.cache/JetBrains/RemoteDev/dist/e203963e52e33_WebStorm-251.23774.210/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Merge Requests" />
       <window_info id="Commit_Guest" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.50037825" visible="true" weight="0.15371093" />
-      <window_info id="Commit" order="1" weight="0.15390626" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.18131225" />
+      <window_info active="true" id="Commit" order="1" sideWeight="0.50037825" visible="true" weight="0.18131225" />
       <window_info id="Structure" order="2" sideWeight="0.4995379" side_tool="true" weight="0.15390626" />
       <window_info id="Pull Requests" order="3" sideWeight="0.50101215" weight="0.15390626" />
-      <window_info active="true" id="Bookmarks" order="4" sideWeight="0.49962178" side_tool="true" visible="true" weight="0.15371093" />
+      <window_info id="Bookmarks" order="4" side_tool="true" weight="0.15371093" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="TODO" />
@@ -69,9 +68,9 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.3302257" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.3302257" />
       <window_info anchor="bottom" id="Services" order="4" weight="0.33029515" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.48670977" />
+      <window_info anchor="bottom" id="Run" order="5" weight="0.3302257" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
@@ -86,7 +85,10 @@
       <recent name="$PROJECT_DIR$/../vector_service/.idea" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.start">
+    <configuration name="app.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/../vector_service/app.js" working-dir="$PROJECT_DIR$/../vector_service">
+      <method v="2" />
+    </configuration>
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/../vector_service/package.json" />
       <command value="run" />
@@ -100,6 +102,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.start" />
+        <item itemvalue="Node.js.app.js" />
       </list>
     </recent_temporary>
   </component>
@@ -118,7 +121,9 @@
       <option name="presentableId" value="Default" />
       <updated>1743987479349</updated>
       <workItem from="1743987481055" duration="2089000" />
-      <workItem from="1743989824298" duration="12884000" />
+      <workItem from="1743989824298" duration="27185000" />
+      <workItem from="1744159104478" duration="5574000" />
+      <workItem from="1744229017235" duration="221000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;feat: complete the basic insert/query apis for vector database&quot;">
       <option name="closed" value="true" />
@@ -136,7 +141,39 @@
       <option name="project" value="LOCAL" />
       <updated>1743997295120</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="&quot;refactor: refactor the project structure to make it more readable&quot;">
+      <option name="closed" value="true" />
+      <created>1744078502810</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1744078502810</updated>
+    </task>
+    <task id="LOCAL-00004" summary="&quot;feat: add logging feature for the project&quot;">
+      <option name="closed" value="true" />
+      <created>1744080023231</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744080023231</updated>
+    </task>
+    <task id="LOCAL-00005" summary="&quot;refactor: upgrade node version to 18 and use ESM format&quot;">
+      <option name="closed" value="true" />
+      <created>1744084387409</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1744084387410</updated>
+    </task>
+    <task id="LOCAL-00006" summary="&quot;bug: add test file of embedding function&quot;">
+      <option name="closed" value="true" />
+      <created>1744168735496</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1744168735496</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -145,6 +182,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="&quot;feat: complete the basic insert/query apis for vector database&quot;" />
     <MESSAGE value="&quot;feat: complete inserting paper data into vector database&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;feat: complete inserting paper data into vector database&quot;" />
+    <MESSAGE value="&quot;refactor: refactor the project structure to make it more readable&quot;" />
+    <MESSAGE value="&quot;feat: add logging feature for the project&quot;" />
+    <MESSAGE value="&quot;refactor: upgrade node version to 18 and use ESM format&quot;" />
+    <MESSAGE value="&quot;bug: add test file of embedding function&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;bug: add test file of embedding function&quot;" />
   </component>
 </project>
