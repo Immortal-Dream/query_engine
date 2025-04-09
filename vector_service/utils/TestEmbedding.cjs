@@ -45,7 +45,8 @@ async function computeEmbedding(text) {
 
         // Normalize output: convert Float32Array to number[]
         const normalized = vector instanceof Float32Array ? Array.from(vector) : vector;
-        console.log(`[Embedding] Computed embedding for text length ${text.length}`);
+        // Vector Dimension: 768
+        console.log(`[Embedding] Embedding Array Length${normalized.length}`);
         return normalized;
     } catch (error) {
         console.log('[Embedding] Failed to compute embedding:', error);

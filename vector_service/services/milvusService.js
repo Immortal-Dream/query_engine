@@ -1,6 +1,6 @@
 import { MilvusClient, DataType } from '@zilliz/milvus2-sdk-node';
 
-const COLLECTION_NAME = 'papers_384';
+const COLLECTION_NAME = 'essay_768';
 // Vector dimension
 const VECTOR_DIM = 768;
 const client = new MilvusClient({ address: '127.0.0.1:19530' });

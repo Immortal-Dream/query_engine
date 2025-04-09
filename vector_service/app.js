@@ -10,7 +10,7 @@ app.use('/', paperRouter);
 
 // Port number Setting
 const PORT = process.env.PORT || 10086;
-const { initEmbedder, computeEmbedding } = testEmbedding;
+const { initEmbedder } = testEmbedding;
 
 // Start the server
 async function startServer() {
