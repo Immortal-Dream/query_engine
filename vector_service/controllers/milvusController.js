@@ -61,3 +61,43 @@ export async function searchPapers(req, res) {
         res.status(500).json({error: 'Search failed', details: err.message});
     }
 }
+
+/**
+ * Handle HTTP POST /batchInsert
+ * Accepts an array of paper records and inserts them in batch into Milvus.
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+export async function batchPapers(req, res) {
+    try {
+        const papers = req.body;
+
+        if (!Array.isArray(papers) || papers.length === 0) {
+            return res.status(400).json({ error: 'Request body must be a non-empty array' });
+        }
+
+        // Compute embedding for each paper
+        const papersWithVectors = [];
+        for (const paper of papers) {
+            const { paper_id, title, link, abstract } = paper;
+
+            if (!paper_id || !title || !link || !abstract) {
+                return res.status(400).json({ error: 'Each paper must include paper_id, title, link, and abstract' });
+            }
+
+            const vector = await computeEmbedding(`${title} ${abstract}`);
+            papersWithVectors.push({ paper_id, title, link, abstract, vector });
+        }
+
+        const result = await milvusService.batchInsert(papersWithVectors);
+        logger.info(`Batch insert successful. Inserted ${papers.length} records.`);
+        res.json({ message: 'Batch insert successful', inserted: papers.length, result });
+
+    } catch (err) {
+        logger.error(`Batch insert failed: ${err.message}`);
+        res.status(500).json({ error: 'Batch insert failed', details: err.message });
+    }
+
+}
