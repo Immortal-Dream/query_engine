@@ -63,6 +63,41 @@ export async function searchPapers(req, res) {
 }
 
 /**
+ * Handle HTTP POST /vectorSearch
+ *
+ * This endpoint receives a precomputed embedding vector from the client
+ * and performs a similarity search in Milvus to return the top K most similar results.
+ *
+ */
+export async function vectorSearch(req, res) {
+    try {
+        const { embedding } = req.body;
+
+        // Validate that the embedding is a non-empty array
+        if (!Array.isArray(embedding) || embedding.length !== 768) {
+            return res.status(400).json({
+                error: 'Invalid embedding: Must be an array of 768 float values'
+            });
+        }
+
+        // Perform the vector similarity search using Milvus service
+        const result = await milvusService.search(embedding);
+
+        res.json({
+            message: 'Vector Search successful',
+            results: result
+        });
+
+    } catch (err) {
+        logger.error(`Vector Search failed: ${err.message}`);
+        res.status(500).json({
+            error: 'Vector Search failed',
+            details: err.message
+        });
+    }
+}
+
+/**
  * Handle HTTP POST /batchInsert
  * Accepts an array of paper records and inserts them in batch into Milvus.
  *
@@ -82,8 +117,8 @@ export async function batchPapers(req, res) {
         const papersWithVectors = [];
         for (const paper of papers) {
             const { paper_id, title, link, abstract } = paper;
-
-            if (!paper_id || !title || !link || !abstract) {
+            // if (!paper_id || !title || !link || !abstract)
+            if (!paper_id || !title || !link) {
                 return res.status(400).json({ error: 'Each paper must include paper_id, title, link, and abstract' });
             }
 

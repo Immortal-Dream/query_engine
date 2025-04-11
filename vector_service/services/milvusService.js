@@ -1,6 +1,6 @@
 import {MilvusClient, DataType} from '@zilliz/milvus2-sdk-node';
 
-const COLLECTION_NAME = 'essay_768';
+const COLLECTION_NAME = 'essay_768_v2';
 // Vector dimension
 const VECTOR_DIM = 768;
 const client = new MilvusClient({address: '127.0.0.1:19530'});
@@ -12,7 +12,7 @@ export async function init() {
         await client.createCollection({
             collection_name: COLLECTION_NAME,
             fields: [
-                {name: 'paper_id', data_type: DataType.Int64, is_primary_key: true, autoID: false},
+                {name: 'paper_id', data_type: DataType.VarChar, is_primary_key: true, max_length: 20},
                 {name: 'title', data_type: DataType.VarChar, max_length: 512},
                 {name: 'link', data_type: DataType.VarChar, max_length: 512},
                 {name: 'abstract', data_type: DataType.VarChar, max_length: 2048},
@@ -69,5 +69,3 @@ export async function batchInsert(papers) {
         data: papers
     });
 }
-
-
