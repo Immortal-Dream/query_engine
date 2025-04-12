@@ -1,4 +1,2 @@
 nodes:
-  - http://localhost:3001
-  - http://localhost:3002
-  - http://localhost:3003
+  - 39.101.70.173:10086

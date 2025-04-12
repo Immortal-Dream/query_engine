@@ -4,10 +4,7 @@
   "description": "Consistent Hash Load Balancer",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "backend1": "node backend.js 3001",
-    "backend2": "node backend.js 3002",
-    "backend3": "node backend.js 3003"
+    "start": "node index.js"
   },
   "dependencies": {
     "http-proxy": "^1.18.1",
