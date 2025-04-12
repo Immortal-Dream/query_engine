@@ -1,8 +1,8 @@
 import express from 'express';
 import http from 'http';
 import paperRouter from './routes/paper.js';
-import { initEmbedder } from './utils/embedding.js';
-import { logger } from './utils/logger.js';
+import testEmbedding from "./utils/TestEmbedding.cjs";
+//
 
 const app = express();
 app.use(express.json());
@@ -10,19 +10,26 @@ app.use('/', paperRouter);
 
 // Port number Setting
 const PORT = process.env.PORT || 10086;
+const { initEmbedder } = testEmbedding;
 
-// Start the HTTP server
-const server = http.createServer(app);
-server.listen(PORT, async () => {
-    logger.info(`Server running on port ${PORT}`);
-
+// Start the server
+async function startServer() {
     try {
-        // Initialize the embedding model
+        // Initialize the embedding model first
         await initEmbedder();
-        logger.info('Embedding model initialized successfully');
+
+        // Then, start the HTTP server
+        const server = http.createServer(app);
+        server.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+
+
     } catch (error) {
-        logger.error('Failed to initialize embedding model:', error);
-        // You might want to shut down the server if embedding is critical
-        // process.exit(1);
+        console.error('Server startup failed:', error);
+        process.exit(1);
     }
-});
+}
+
+// Start the server
+startServer();

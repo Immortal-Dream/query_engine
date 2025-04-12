@@ -15,6 +15,7 @@
     "chalk": "^4.1.2",
     "dayjs": "^1.11.13",
     "express": "^4.21.2",
-    "fastembed": "^1.14.3"
+    "fastembed": "^1.14.3",
+    "onnxruntime-node": "^1.21.0"
   }
 }

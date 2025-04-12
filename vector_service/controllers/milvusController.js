@@ -1,5 +1,5 @@
 // Import utility for computing embeddings
-import {computeEmbedding} from '../utils/embedding.js';
+import {computeEmbedding} from '../utils/TestEmbedding.cjs';
 // Import Milvus service functions (insert/search)
 import * as milvusService from '../services/milvusService.js';
 // Import logging utility
