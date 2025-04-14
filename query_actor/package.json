@@ -1,0 +1,17 @@
+{
+  "name": "query-actor-service",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Query service for distributed search system",
+  "main": "app.js",
+  "scripts": {
+    "start": "PORT=10087 node app.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "chalk": "^5.4.1",
+    "dayjs": "^1.11.13",
+    "express": "^4.21.2",
+    "fastembed": "^1.14.4"
+  }
+}
