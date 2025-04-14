@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^1.8.4",
     "chalk": "^5.4.1",
+    "crypto": "^1.0.1",
     "dayjs": "^1.11.13",
     "express": "^4.21.2",
     "fastembed": "^1.14.4"
