@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
 import queryRouter from './routes/query.js';
-import { logger } from '../vector_service/utils/logger.js';
+import { logger } from './utils/logger.js';
 import testEmbedding from "./utils/embedding.cjs";
 
 const app = express();
