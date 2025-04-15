@@ -41,7 +41,7 @@ router.get('/search', async (req, res) => {
         // Update cache
         put(vectorSearchResponse.data, query, (e, v) => logger.info(`Cache values: ${JSON.stringify(vectorSearchResponse.data)}`));
         res.json({
-            results: vectorSearchResponse.data,
+            results: vectorSearchResponse.data.results,
             message: 'Query processed successfully'
         });
     } catch (error) {
