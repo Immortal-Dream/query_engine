@@ -69,3 +69,44 @@ export async function batchInsert(papers) {
         data: papers
     });
 }
+
+/**
+ * Get the row count of a specified Milvus collection.
+ * @param {string} collectionName - The name of the collection.
+ * @returns {Promise<number>} - The number of entities (rows) in the collection.
+ */
+export async function getRowCount(collectionName = COLLECTION_NAME) {
+    const stats = await client.getCollectionStatistics({ collection_name: collectionName });
+
+    if (stats.status.error_code === 'Success') {
+        const rowCountStr = stats.data.row_count || '0';
+        return parseInt(rowCountStr, 10);
+    } else {
+        throw new Error(`Failed to get collection statistics: ${stats.status.reason}`);
+    }
+}
+
+/**
+ * Delete a paper from the collection by its string primary key paper_id.
+ */
+export async function deleteById(paper_id) {
+    if (!paper_id) {
+        throw new Error('paper_id is required for deletion');
+    }
+
+    const filterExpr = `paper_id in ["${paper_id}"]`;
+    console.log(`🧪 Delete filter: ${filterExpr}`);
+
+    try {
+        await client.loadCollection({ collection_name: COLLECTION_NAME }); // Ensure loaded
+        const result = await client.delete({
+            collection_name: COLLECTION_NAME,
+            filter: filterExpr
+        });
+
+        console.log(`Deleted count: ${result.delete_cnt}`);
+        return result;
+    } catch (error) {
+        throw new Error(`Failed to delete paper with ID ${paper_id}: ${error.message}`);
+    }
+}

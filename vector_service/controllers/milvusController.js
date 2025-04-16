@@ -1,5 +1,5 @@
 // Import utility for computing embeddings
-import {computeEmbedding} from '../utils/TestEmbedding.cjs';
+import {computeEmbedding} from '../utils/Embedding.cjs';
 // Import Milvus service functions (insert/search)
 import * as milvusService from '../services/milvusService.js';
 // Import logging utility
@@ -54,7 +54,7 @@ export async function searchPapers(req, res) {
 
         // Perform vector similarity search in Milvus
         const result = await milvusService.search(embedding);
-
+        logger.info('Search successful');
         res.json({message: 'Search successful', results: result});
     } catch (err) {
         logger.error(`Search failed: ${err.message}`);
