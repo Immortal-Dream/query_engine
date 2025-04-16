@@ -17,9 +17,12 @@ function loadServersAndUpdateRing() {
     try {
         const file = fs.readFileSync(configPath, 'utf8');
         const config = YAML.parse(file);
+
         if (Array.isArray(config.nodes) && config.nodes.length > 0) {
-            ring = new HashRing(config.nodes, 100);
-            console.log(`HashRing updated with ${config.nodes.length} nodes.`);
+            // nodes is array of { address, weight }
+            ring = new HashRing(config.nodes);
+            const summary = config.nodes.map(n => `${n.address} (${n.weight || 100})`).join(', ');
+            console.log(`HashRing updated with ${config.nodes.length} nodes: ${summary}`);
         } else {
             console.warn('⚠️ No valid nodes found in config file.');
         }
@@ -27,6 +30,7 @@ function loadServersAndUpdateRing() {
         console.error('Failed to parse YAML config:', err.message);
     }
 }
+
 
 // Load once at startup
 loadServersAndUpdateRing();

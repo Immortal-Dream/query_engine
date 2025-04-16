@@ -1,26 +1,27 @@
 const { getID, consistentHash } = require('./idUtils');
 
 class HashRing {
-    constructor(nodes = [], virtualNodes = 100) {
-        this.virtualNodes = virtualNodes;
+    constructor(nodes = []) {
         this.nidToRealNode = new Map(); // NID -> actual node address
         this.nidList = [];
 
-        // For each real node, generate multiple virtual nodes
         for (const node of nodes) {
-            for (let i = 0; i < this.virtualNodes; i++) {
-                const virtualLabel = `${node}#${i}`; // eg. http://x.x.x.x:3001#42
+            const address = node.address;
+            const virtualCount = node.weight || 100;
+
+            for (let i = 0; i < virtualCount; i++) {
+                const virtualLabel = `${address}#${i}`;
                 const nid = getID(virtualLabel);
                 this.nidList.push(nid);
-                this.nidToRealNode.set(nid, node);
+                this.nidToRealNode.set(nid, address);
             }
         }
     }
 
     getNode(key) {
-        const kid = getID(key); // hash the key
-        const targetNid = consistentHash(kid, this.nidList); // choose best virtual node
-        return this.nidToRealNode.get(targetNid); // map back to real node
+        const kid = getID(key);
+        const targetNid = consistentHash(kid, this.nidList);
+        return this.nidToRealNode.get(targetNid);
     }
 }
 
