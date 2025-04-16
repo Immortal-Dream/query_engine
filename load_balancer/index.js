@@ -59,13 +59,14 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    const key = parsedUrl.path;
     // Get a node from the hash ring (can use any consistent key)
-    const node = ring.getNode('default');
+    const node = ring.getNode(key);
 
     // Construct proper target URL with http protocol
     const target = `http://${node}`;
 
-    console.log(`📦 Routing request "${req.url}" to ${target}`);
+    console.log(`Routing request "${req.url}" to ${target}`);
 
     // Forward the request keeping the original path and query parameters
     proxy.web(req, res, {
