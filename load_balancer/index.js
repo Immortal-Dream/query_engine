@@ -39,6 +39,7 @@ fs.watchFile(configPath, { interval: 1000 }, () => {
 
 // Create HTTP server
 const server = http.createServer((req, res) => {
+    // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', '*');
@@ -50,25 +51,33 @@ const server = http.createServer((req, res) => {
     }
 
     const parsedUrl = url.parse(req.url, true);
-    if (parsedUrl.pathname === '/api/query') {
-        if (!ring) {
-            res.writeHead(503);
-            res.end('Service unavailable: no backend nodes loaded.');
-            return;
-        }
 
-        const query = parsedUrl.query.q || 'default';
-        const target = ring.getNode(query);
-
-        console.log(`📦 Routing "${query}" to ${target}`);
-        proxy.web(req, res, { target }, err => {
-            res.writeHead(502);
-            res.end('Bad Gateway: ' + err.message);
-        });
-    } else {
-        res.writeHead(404);
-        res.end('Not Found');
+    // Keep the original path exactly as is
+    if (!ring) {
+        res.writeHead(503);
+        res.end('Service unavailable: no backend nodes loaded.');
+        return;
     }
+
+    // Get a node from the hash ring (can use any consistent key)
+    const node = ring.getNode('default');
+
+    // Construct proper target URL with http protocol
+    const target = `http://${node}`;
+
+    console.log(`📦 Routing request "${req.url}" to ${target}`);
+
+    // Forward the request keeping the original path and query parameters
+    proxy.web(req, res, {
+        target,
+        changeOrigin: true,
+        preserveHeaderKeyCase: true,
+        ignorePath: false
+    }, err => {
+        console.error('Proxy error:', err);
+        res.writeHead(502);
+        res.end('Bad Gateway: ' + err.message);
+    });
 });
 
 server.listen(PORT, () => {

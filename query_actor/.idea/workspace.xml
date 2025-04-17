@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="&quot;bugfix: fix the initializing embedder&quot;">
+    <list default="true" id="cc0bfecf-26b5-49e4-a0ed-c8e3ee4d935a" name="Changes" comment="feat: implement batch insert">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vector_service/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vector_service/controllers/milvusController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/controllers/milvusController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vector_service/routes/paperRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/routes/paperRouter.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../vector_service/services/milvusService.js" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/services/milvusService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../vector_service/utils/TestEmbedding.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/../vector_service/utils/TestEmbedding.cjs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,29 +33,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Node.js.app.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/root/.cache/JetBrains/RemoteDev/dist/e203963e52e33_WebStorm-251.23774.210/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Node.js.app.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature-vector",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "ts.external.directory.path": "/root/.cache/JetBrains/RemoteDev/dist/e203963e52e33_WebStorm-251.23774.210/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Merge Requests" />
       <window_info id="Commit_Guest" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18131225" />
-      <window_info id="Commit" order="1" sideWeight="0.50037825" weight="0.18131225" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2721148" />
+      <window_info id="Commit" order="1" sideWeight="0.50037825" weight="0.18144532" />
       <window_info id="Structure" order="2" sideWeight="0.4995379" side_tool="true" weight="0.15390626" />
       <window_info id="Pull Requests" order="3" sideWeight="0.50101215" weight="0.15390626" />
       <window_info id="Bookmarks" order="4" side_tool="true" weight="0.15371093" />
@@ -68,9 +67,9 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.53827286" />
-      <window_info anchor="bottom" id="Services" order="4" weight="0.33029515" />
-      <window_info anchor="bottom" id="Run" order="5" weight="0.53827286" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.49509323" />
+      <window_info anchor="bottom" id="Run" order="4" weight="0.49509323" />
+      <window_info anchor="bottom" id="Services" order="5" weight="0.33029515" />
       <window_info anchor="right" id="Endpoints" />
       <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
@@ -123,7 +122,7 @@
       <workItem from="1743987481055" duration="2089000" />
       <workItem from="1743989824298" duration="27185000" />
       <workItem from="1744159104478" duration="5574000" />
-      <workItem from="1744229017235" duration="6292000" />
+      <workItem from="1744229017235" duration="26392000" />
     </task>
     <task id="LOCAL-00001" summary="&quot;feat: complete the basic insert/query apis for vector database&quot;">
       <option name="closed" value="true" />
@@ -181,7 +180,23 @@
       <option name="project" value="LOCAL" />
       <updated>1744229516425</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="&quot;bugfix: change the parameter of vector database&quot;">
+      <option name="closed" value="true" />
+      <created>1744236581793</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1744236581793</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: implement batch insert">
+      <option name="closed" value="true" />
+      <created>1744397890800</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1744397890800</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +210,20 @@
     <MESSAGE value="&quot;refactor: upgrade node version to 18 and use ESM format&quot;" />
     <MESSAGE value="&quot;bug: add test file of embedding function&quot;" />
     <MESSAGE value="&quot;bugfix: fix the initializing embedder&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;bugfix: fix the initializing embedder&quot;" />
+    <MESSAGE value="&quot;bugfix: change the parameter of vector database&quot;" />
+    <MESSAGE value="feat: implement batch insert" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: implement batch insert" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/../vector_service/controllers/milvusController.js</url>
+          <line>124</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

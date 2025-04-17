@@ -1,7 +1,7 @@
 import express from 'express';
 import http from 'http';
-import paperRouter from './routes/paper.js';
-import testEmbedding from "./utils/TestEmbedding.cjs";
+import paperRouter from './routes/paperRouter.js';
+import testEmbedding from "./utils/Embedding.cjs";
 //
 
 const app = express();
