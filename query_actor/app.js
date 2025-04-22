@@ -1,14 +1,15 @@
 import express from 'express';
 import http from 'http';
-import paperRouter from './routes/paperRouter.js';
-import testEmbedding from "./utils/Embedding.cjs";
+import queryRouter from './routes/query.js';
+import { logger } from './utils/logger.js';
+import testEmbedding from "./utils/embedding.cjs";
 
 const app = express();
 app.use(express.json());
-app.use('/', paperRouter);
+app.use('/', queryRouter);
 
 // Port number Setting
-const PORT = process.env.PORT || 10086;
+const PORT = process.env.PORT || 10087;
 const { initEmbedder } = testEmbedding;
 
 // Start the server
@@ -17,15 +18,12 @@ async function startServer() {
         // Initialize the embedding model first
         await initEmbedder();
 
-        // Then, start the HTTP server
         const server = http.createServer(app);
         server.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
+            logger.info(`Query service running on port ${PORT}`);
         });
-
-
     } catch (error) {
-        console.error('Server startup failed:', error);
+        logger.error('Query server startup failed:', error);
         process.exit(1);
     }
 }

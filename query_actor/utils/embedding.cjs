@@ -44,12 +44,10 @@ async function computeEmbedding(text) {
         const vector = await embedder.queryEmbed(text);
 
         // Normalize output: convert Float32Array to number[]
-        const normalized = vector instanceof Float32Array ? Array.from(vector) : vector;
         // Vector Dimension: 768
-        console.log(`[Embedding] Embedding Array Length${normalized.length}`);
+        const normalized = vector instanceof Float32Array ? Array.from(vector) : vector;
         return normalized;
     } catch (error) {
-        console.log('[Embedding] Failed to compute embedding:', error);
         throw new Error(`Embedding failed: ${error.message}`);
     }
 }
