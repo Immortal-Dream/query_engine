@@ -140,10 +140,7 @@ export async function hybridSearchPapers(req, res) {
         if (!query) {
             return res.status(400).json({error: 'Query parameter is required'});
         }
-
-        // Compute both query embeddings - using the same query for both vectors
-        const titleAbstractEmbedding = await computeEmbedding(query);
-        const fulltextEmbedding = await computeEmbedding(query);
+        const {titleAbstractEmbedding, fulltextEmbedding} = req.body;
 
         // Perform hybrid search in Milvus
         const result = await milvusService.hybridSearch(titleAbstractEmbedding, fulltextEmbedding);
@@ -270,5 +267,27 @@ export async function batchFulltextPapers(req, res) {
     } catch (err) {
         logger.error(`Batch fulltext insert failed: ${err.message}`);
         res.status(500).json({ error: 'Batch fulltext insert failed', details: err.message });
+    }
+}
+export async function getEmbedding(req, res) {
+    try {
+        const {query} = req.query;
+
+        if (!query) {
+            return res.status(400).json({error: 'Query parameter is required'});
+        }
+
+        // Compute both query embeddings - using the same query for both vectors
+        const titleAbstractEmbedding = await computeEmbedding(query);
+        const fulltextEmbedding = await computeEmbedding(query);
+
+        logger.info('Get embedding successful');
+        res.join({
+            titleAbstractEmbedding: titleAbstractEmbedding,
+            fulltextEmbedding: fulltextEmbedding
+        })
+    } catch (err) {
+        logger.error(`Get embedding failed: ${err.message}`);
+        res.status(500).json({error: 'Get embedding failed', details: err.message});
     }
 }

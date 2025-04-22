@@ -5,7 +5,8 @@ import {
     batchPapers,
     vectorSearch,
     insertFulltextPaper,
-    batchFulltextPapers
+    batchFulltextPapers,
+    getEmbedding, hybridSearchPapers
 } from '../controllers/milvusController.js';
 
 const router = express.Router();
@@ -16,6 +17,8 @@ router.post('/batchInsert', batchPapers);
 // Query endpoints
 router.get('/search', searchPapers);
 router.post('/vectorSearch', vectorSearch);
+router.post('/hybridSearch', hybridSearchPapers);
 router.post('/fulltextBatch', batchFulltextPapers);
 router.post('/fulltextSingle', insertFulltextPaper);
+router.get('/getEmbedding', getEmbedding)
 export default router;
